@@ -1,21 +1,29 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 def signin_view(request):
+    """ Sign in view """
+
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        user = auth.authenticate(username=email , password=password)
+        try:
+            user = auth.authenticate(username=User.objects.get(email=email) , password=password)
+        except Exception as exc:
+            return render(request, 'accounts/login.html',{'error':'Invalid email or password.'})        
         if user is not None:
             auth.login(request,user)
             return redirect('dashboard')
-            #return render(request, 'accounts/login.html',{'error':'Success'})        
         else:
-            return render(request, 'accounts/login.html',{'error':'Username or password is incorrect.!'})        
+            return render(request, 'accounts/login.html',{'error':'Username or password.'})        
     return render(request, 'accounts/login.html')
 
 def signup_view(request):
+    """ Allow user to register """
+
     if request.method == 'POST':
         name = request.POST['name']
         email = request.POST['email']
@@ -27,7 +35,6 @@ def signup_view(request):
         user.is_staff = True
         user.is_superuser = False
         user.username = email.split('@')[0]
-        
         try:
             user.save()
             return render(request, 'accounts/signin.html')            
@@ -35,5 +42,12 @@ def signup_view(request):
             return render(request, 'accounts/signup.html')        
     return render(request, 'accounts/signup.html')
 
+
+#@permission_required('is_superuser',login_url='/accounts/unauthorized')  // For super user only
+#@staff_member_required
+@login_required(login_url='/accounts/signin')
 def dashboard(request):
     return render(request, 'base.html')
+
+def unauthorized(request):
+    return render(request, 'accounts/unauthorized.html')

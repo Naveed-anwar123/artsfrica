@@ -48,6 +48,16 @@
                         <h4>Sign In</h4>
                         <p>Hello there, Sign in and start managing your art work</p>
                     </div>
+                   
+                                {% if error %}
+                                <div class="login-form-head" style="background-color:crimson;color: white;padding-bottom: 3%;padding-top: 3%;">
+                                        <h5>
+                                    {{error}}
+                                </h5>
+                           
+                            </div>
+                                {% endif %}
+                            
                     <div class="login-form-body">
                         <div class="form-gp">
                             <label for="exampleInputEmail1">Email address</label>
