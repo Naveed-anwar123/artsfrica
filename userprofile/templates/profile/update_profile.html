@@ -1,0 +1,63 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="col-8 mt-5 offset-md-2">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="header-title">Profile</h1>
+            <form action="{% url 'update_profile' %}" enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Profile Image</label>
+                    <input class="form-control" type="file" name="avatar" value="" id="example-text-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="col-form-label">About Me</label>
+                    <textarea rows="4" cols="50" name="about"  class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Exibition</label>
+                    <textarea rows="4" cols="50" name="ex" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-form-label">Education</label>
+                    <textarea rows="4" cols="50" name="education" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Contact Address</label>
+                    <input class="form-control" name="address" type="text" value="" id="example-text-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Country</label>
+                    <input class="form-control" name="country" type="text" value="" id="example-text-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">City</label>
+                    <input class="form-control" name="city" type="text" value="" id="example-text-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Zip/Postal Code</label>
+                    <input class="form-control" name="zip" type="text" value="" id="example-text-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input"  class="col-form-label">Phone Number</label>
+                    <input class="form-control" name="phone" type="text" value=""="Carlos Rath" id="example-text-input">
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Update Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

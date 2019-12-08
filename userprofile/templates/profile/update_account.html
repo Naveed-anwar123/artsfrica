@@ -1,0 +1,48 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="col-8 mt-5 offset-md-2">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="header-title">Account Information</h1>
+            <form enctype="multipart/form-data" method="POST">
+
+
+
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">First Name</label>
+                    <input class="form-control" name="fname" type="text" value="" id="example-text-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Last Name</label>
+                    <input class="form-control" name="lname" type="text" value="" id="example-text-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Email address</label>
+                    <input class="form-control" name="email" type="text" value="{{user.email}}" id="example-text-input" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">New passwrod</label>
+                    <input class="form-control" name="passwrod" type="text" value=""
+                        id="example-text-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Confirm passwrod</label>
+                    <input class="form-control" name="cpasswrod" type="text" value=""
+                        id="example-text-input">
+                </div>
+                <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Update Account</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
