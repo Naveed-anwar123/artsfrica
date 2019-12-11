@@ -11,48 +11,53 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Profile Image</label>
-                    <input class="form-control" type="file" name="avatar" value="" id="example-text-input">
+                    <input class="form-control" type="file" name="avatar"  id="example-text-input">
                 </div>
 
                 <div class="form-group">
                     <label class="col-form-label">About Me</label>
-                    <textarea rows="4" cols="50" name="about"  class="form-control"></textarea>
+                    <textarea rows="4" cols="50" name="about"   class="form-control">
+                        {{user.userprofile.about}}
+                    </textarea>
                 </div>
                 <div class="form-group">
                     <label class="col-form-label">Exibition</label>
-                    <textarea rows="4" cols="50" name="ex" class="form-control"></textarea>
+                    <textarea rows="4" cols="50" name="ex" class="form-control">
+                        {{user.userprofile.ex}}
+                    </textarea>
                 </div>
 
                 <div class="form-group">
                     <label class="col-form-label">Education</label>
-                    <textarea rows="4" cols="50" name="education" class="form-control"></textarea>
+                    <textarea rows="4" cols="50" name="education" class="form-control">
+                        {{user.userprofile.education}}
+                    </textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Contact Address</label>
-                    <input class="form-control" name="address" type="text" value="" id="example-text-input">
+                    <input class="form-control" name="address" value="{{user.userprofile.address}}" type="text"  id="example-text-input">
                 </div>
 
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Country</label>
-                    <input class="form-control" name="country" type="text" value="" id="example-text-input">
+                    <input class="form-control" name="country" type="text" value="{{user.userprofile.country}}" id="example-text-input">
                 </div>
 
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">City</label>
-                    <input class="form-control" name="city" type="text" value="" id="example-text-input">
+                    <input class="form-control" name="city" type="text" value="{{user.userprofile.city}}" id="example-text-input">
                 </div>
 
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Zip/Postal Code</label>
-                    <input class="form-control" name="zip" type="text" value="" id="example-text-input">
+                    <input class="form-control" name="zip" type="text" value="{{user.userprofile.zip_or_postal_code}}" id="example-text-input">
                 </div>
 
                 <div class="form-group">
                     <label for="example-text-input"  class="col-form-label">Phone Number</label>
-                    <input class="form-control" name="phone" type="text" value=""="Carlos Rath" id="example-text-input">
+                    <input class="form-control" name="phone" type="text" value="{{user.userprofile.phone}}" id="example-text-input">
                 </div>
-
                 <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Update Profile</button>
             </form>
         </div>

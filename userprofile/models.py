@@ -20,7 +20,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.name
+        return str(self.created_at)
 
 def create_profile(sender, **kwargs):
     if kwargs['created']:

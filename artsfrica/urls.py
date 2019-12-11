@@ -24,5 +24,6 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard' ),
     path('accounts/', include('accounts.urls')),
     path('user', include('userprofile.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('artwork/', include('uploadartwork.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

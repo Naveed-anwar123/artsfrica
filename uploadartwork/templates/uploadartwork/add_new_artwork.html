@@ -1,0 +1,133 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+
+<style>
+    .bootstrap-tagsinput {
+        width: 100% !important;
+    }
+
+    .bootstrap-tagsinput .tag {
+        color: black;
+    }
+</style>
+
+<div class="col-8 mt-5 offset-md-2">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="header-title">Add new Artwork</h1>
+            <form action="{% url 'add_artwork' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Upload an image ﬁle which is at least 1200 x
+                        1500 pixels and less than 50MB </label>
+                    <input class="form-control" name="images" type="file" required multiple>
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Title</label>
+                    <input class="form-control" name="title" type="text" value="" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-form-label">Short description of artwork (optional)</label>
+                    <textarea rows="4" cols="50" name="description" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Subject</label>
+                    <input class="form-control" name="subject" type="text" value="" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-form-label">Category</label>
+                    <select class="custom-select" name="category">
+                        <option value="Category-1" selected="selected">Category-1</option>
+                        <option value="Category-2">Category-2</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="example-month-input" class="col-form-label">Year this artwork was created </label>
+                    <input class="form-control" type="month" name="year" id="example-month-input">
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="example-text-input" class="col-form-label">Width (cm) </label>
+                            <input class="form-control" name="width" type="text" value="" required>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="example-text-input" class="col-form-label">Height (cm) </label>
+                            <input class="form-control" name="height" type="text" value="" required>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="example-text-input" class="col-form-label">Depth (cm) </label>
+                            <input class="form-control" name="depth" type="text" value="" required>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Medium </label>
+                    <input class="form-control" name="medium" data-role="tagsinput" id="tags" type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Material </label>
+                    <input class="form-control" name="material" data-role="tagsinput" id="tags" type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="example-text-input" class="col-form-label">Styles </label>
+                    <input class="form-control" name="styles" data-role="tagsinput" id="tags" type="text" required>
+                </div>
+
+
+                <label for="example-text-input" class="col-form-label">Framed </label><br>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" value="y" checked="" id="framed1" name="framed" class="custom-control-input">
+                    <label class="custom-control-label" for="framed1">Yes</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" value="n" id="framed2" name="framed" class="custom-control-input">
+                    <label class="custom-control-label" for="framed2">No</label>
+                </div>
+
+                <br>
+                <br>
+                <label for="example-text-input" class="col-form-label">Are you the copyright owner of this artwork?
+                </label>
+                <br>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" value="y" checked="" id="copyright1" name="copyright" class="custom-control-input">
+                    <label class="custom-control-label" for="copyright1">Yes</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" value="n" id="copyright2" name="copyright" class="custom-control-input">
+                    <label class="custom-control-label" for="copyright2">No</label>
+                </div>
+                <Br>
+                <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
