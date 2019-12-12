@@ -8,6 +8,8 @@ from django.contrib.auth import logout
 def signin_view(request):
     """ Sign in view """
 
+    if request.user.is_authenticated:
+        return redirect('dashboard')   
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -20,11 +22,15 @@ def signin_view(request):
             return redirect('dashboard')
         else:
             return render(request, 'accounts/login.html',{'error':'Username or password.'})        
+                
+
     return render(request, 'accounts/login.html')
 
 def signup_view(request):
     """ Allow user to register """
-
+    if request.user.is_authenticated:
+        return redirect('dashboard')   
+        
     if request.method == 'POST':
         name = request.POST['name']
         email = request.POST['email']

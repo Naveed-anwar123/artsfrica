@@ -29,8 +29,8 @@ class Images(models.Model):
     def get_user_image_folder(instance,filename):
         return "%s/%s" %('artwork/'+str(instance.post.id),filename)
 
-    post = models.ForeignKey(ArtWork, on_delete=models.CASCADE)
+    post = models.ForeignKey(ArtWork, on_delete=models.CASCADE,related_name='post')
     image = models.ImageField(upload_to=get_user_image_folder, verbose_name='Image')
 
     def __str__(self):
-        return self.image
+        return str(self.post)

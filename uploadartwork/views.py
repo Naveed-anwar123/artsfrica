@@ -86,3 +86,18 @@ def view_artwork(request):
     #print(Images.objects.get())
     return render(request, 'uploadartwork/view_artwork.html', { 'artworks': artworks })
 
+def detail_view(request, id):
+    
+    # To get object
+    #artwork = ArtWork.objects.filter(id=id).first()
+    #print(artwork)
+    # To get query set
+    #artwork = ArtWork.objects.filter(id=id)
+    #print(artwork)
+    
+    artwork = ArtWork.objects.filter(id=id).first().post.all()
+    if not artwork:
+        return render(request, 'uploadartwork/404.html')        
+
+    print(artwork[0].image)
+    return render(request, 'uploadartwork/detail_view.html')
