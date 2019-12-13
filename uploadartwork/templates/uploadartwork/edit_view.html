@@ -20,69 +20,70 @@
 <div class="col-8 mt-5 offset-md-2">
     <div class="card">
         <div class="card-body">
-            <h1 class="header-title">Add new Artwork</h1>
-            <form action="{% url 'add_artwork' %}" method="POST" enctype="multipart/form-data">
+            <h1 class="header-title">Edit Artwork</h1>
+            <form action="{% url 'update_artwork' artwork.id %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Upload an image ﬁle which is at least 1200 x
                         1500 pixels and less than 50MB </label>
-                    <input class="form-control" name="images" type="file" required multiple>
+                    <input class="form-control" name="images" type="file" multiple>
                 </div>
+                <input type="hidden" value="{{artwork.id}}" name="id">
 
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Title</label>
-                    <input class="form-control" name="title" type="text" value="" required>
+                    <input class="form-control" name="title" type="text" value="{{artwork.title}}" required>
                 </div>
 
                 <div class="form-group">
                     <label class="col-form-label">Short description of artwork (optional)</label>
-                    <textarea rows="4" cols="50" name="description" class="form-control"></textarea>
+                    <textarea rows="4" cols="50" name="description"
+                        class="form-control">{{artwork.description}}</textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Subject</label>
-                    <input class="form-control" name="subject" type="text" value="" required>
+                    <input class="form-control" name="subject" type="text" value="{{artwork.subject}}" required>
                 </div>
 
                 <div class="form-group">
                     <label class="col-form-label">Category</label>
                     <select class="custom-select" name="category">
-                        <option value="Drawing" selected="selected"> Drawing </option>
-                        <option value="Sculpture"> Sculpture </option>
-                        <option value="Work on paper">Work on paper </option>
-                        <option value="Prints"> Prints </option>
-                        <option value="Photography"> Photography </option>
-                        <option value="Mixed Media">Mixed Media</option>
-                        <option value="Digital"> Digital</option>
-
+                        {% if artwork.category == 'Category-1'  %}
+                        <option value="Category-1" selected="selected">Category-1</option>
+                        <option value="Category-2">Category-2</option>
+                        {% elif artwork.category == 'Category-2'  %}
+                        <option value="Category-1">Category-1</option>
+                        <option value="Category-2" selected="selected">Category-2</option>
+                        {% endif %}
                     </select>
                 </div>
-                                                
 
                 <div class="form-group">
                     <label for="example-month-input" class="col-form-label">Year this artwork was created </label>
-                    <input class="form-control" type="month" name="year" id="example-month-input">
+                    <input class="form-control" type="month" name="year" value="{{artwork.year}}"
+                        id="example-month-input">
                 </div>
 
                 <div class="row">
                     <div class="col-4">
                         <div class="form-group">
                             <label for="example-text-input" class="col-form-label">Width (cm) </label>
-                            <input class="form-control" name="width" type="text" value="" required>
+                            <input class="form-control" name="width" type="text" value="{{artwork.width}}" required>
                         </div>
                     </div>
 
                     <div class="col-4">
                         <div class="form-group">
                             <label for="example-text-input" class="col-form-label">Height (cm) </label>
-                            <input class="form-control" name="height" type="text" value="" required>
+                            <input class="form-control" name="height" type="text" value="{{artwork.height}}" required>
                         </div>
                     </div>
 
                     <div class="col-4">
                         <div class="form-group">
                             <label for="example-text-input" class="col-form-label">Depth (cm) </label>
-                            <input class="form-control" name="depth" type="text" value="" required>
+                            <input class="form-control" name="depth" type="text" value="{{artwork.depth}}" required>
                         </div>
                     </div>
                 </div>
@@ -91,21 +92,26 @@
 
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Medium </label>
-                    <input class="form-control" name="medium" data-role="tagsinput" id="tags" type="text" required>
+                    <input class="form-control" name="medium" data-role="tagsinput" id="tags" value="{{artwork.medium}}"
+                        type="text" required>
                 </div>
 
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Material </label>
-                    <input class="form-control" name="material" data-role="tagsinput" id="tags" type="text" required>
+                    <input class="form-control" name="material" data-role="tagsinput" value="{{artwork.material}}"
+                        id="tags" type="text" required>
                 </div>
 
                 <div class="form-group">
                     <label for="example-text-input" class="col-form-label">Styles </label>
-                    <input class="form-control" name="styles" data-role="tagsinput" id="tags" type="text" required>
+                    <input class="form-control" name="styles" data-role="tagsinput" value="{{artwork.styles}}" id="tags"
+                        type="text" required>
                 </div>
 
 
+
                 <label for="example-text-input" class="col-form-label">Framed </label><br>
+                {% if artwork.is_framed %}
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" value="y" checked="" id="framed1" name="framed" class="custom-control-input">
                     <label class="custom-control-label" for="framed1">Yes</label>
@@ -114,12 +120,23 @@
                     <input type="radio" value="n" id="framed2" name="framed" class="custom-control-input">
                     <label class="custom-control-label" for="framed2">No</label>
                 </div>
+                {% elif not artwork.is_framed %}
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" value="y"  id="framed1" name="framed" class="custom-control-input">
+                    <label class="custom-control-label" for="framed1">Yes</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" checked="" value="n" id="framed2" name="framed" class="custom-control-input">
+                    <label class="custom-control-label" for="framed2">No</label>
+                </div>
+                {% endif %}
 
                 <br>
                 <br>
                 <label for="example-text-input" class="col-form-label">Are you the copyright owner of this artwork?
                 </label>
                 <br>
+                {% if artwork.is_copyright %}
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" value="y" checked="" id="copyright1" name="copyright"
                         class="custom-control-input">
@@ -129,8 +146,19 @@
                     <input type="radio" value="n" id="copyright2" name="copyright" class="custom-control-input">
                     <label class="custom-control-label" for="copyright2">No</label>
                 </div>
+                {% elif not artwork.is_copyright %}
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" value="y"  id="copyright1" name="copyright"
+                        class="custom-control-input">
+                    <label class="custom-control-label" for="copyright1">Yes</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" value="n" checked="" id="copyright2" name="copyright" class="custom-control-input">
+                    <label class="custom-control-label" for="copyright2">No</label>
+                </div>
+                {% endif %}
                 <Br>
-                <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save</button>
+                <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Update</button>
             </form>
         </div>
     </div>

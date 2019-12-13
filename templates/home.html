@@ -45,60 +45,49 @@
 
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-lg-8  d-none d-lg-block">
-                        <div class="horizontal-menu" style="margin-left: 35%;">
-                            <nav>
+                    <div class="col-lg-12  d-none d-lg-block">
+                        <div class="horizontal-menu">
+                            <nav style="margin-top: 3%;">
                                 <ul id="nav_menu">
-                                    <li
-                                        class="{% if request.resolver_match.url_name == 'update_profile' %}active{% endif %}">
-                                        <a href="{% url 'update_profile' %}"><i
-                                                class="ti-user"></i><span>Profile</span></a>
+                                    <li class="">
+                                        <a href=""><span>Painting </span></a>
                                     </li>
-                                    <li
-                                        class="{% if request.resolver_match.url_name == 'update_account_information' %}active{% endif %}">
-                                        <a href="{% url 'update_account_information' %}"><i
-                                                class="ti-stamp"></i><span>Account
-                                                Information</span></a>
+
+                                    <li class="">
+                                        <a href=""><span> Drawing </span></a>
                                     </li>
-                                    <li>
-                                        <a href="{% url 'add_artwork' %}"><i
-                                                class="ti-upload"></i><span>Upload</span></a>
+
+                                    <li class="">
+                                        <a href=""><span> Sculpture </span></a>
                                     </li>
-                                    {% if not user.is_superuser%}
-                                    <li>
-                                        <a href="{% url 'view_artwork' %}"><i class="ti-image"></i><span>My
-                                                Artwork</span></a>
+
+                                    <li class="">
+                                        <a href=""><span>Work on paper  </span></a>
                                     </li>
-                                    {% endif %}
-                                    {% if user.is_superuser%}
-                                    <li>
-                                        <a href="{% url 'collection_view' %}"><i
-                                                class="ti-layout-grid4"></i><span>Collections</span></a>
+
+                                    <li class="">
+                                        <a href=""><span> Prints </span></a>
                                     </li>
-                                    {% endif %}
+                                    <li class="">
+                                        <a href=""><span> Photography </span></a>
+                                    </li>
+
+
+                                    <li class="" style="margin-left: 30%">
+                                     
+                                    </li>
+
+                                    <li class="">
+                                        <button onclick="window.location.href='{% url 'signin' %}'" class="btn btn-primary"><span>Login</span></button>
+                                    </li>
+
+                                    <li class="">
+                                        <button onclick="window.location.href='{% url 'signup' %}'" class="btn btn-info"><span>Singup</span></button>
+                                    </li>
+
                             </nav>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="clearfix d-md-inline-block d-block">
-                            <div class="user-profile m-0">
-                                {% if user.userprofile.image %}
-                                <img class="avatar user-thumb" src="{{user.userprofile.image.url}}" alt="avatar">
-                                {% endif %}
-                                <h4 class="user-name dropdown-toggle" data-toggle="dropdown">
-                                    {% if user.is_authenticated%}
-                                    {{user.email}}
-                                    {% endif %}
-                                    <i class="fa fa-angle-down"></i></h4>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- nav and search button -->
-
-                    <!-- mobile_menu -->
 
 
 

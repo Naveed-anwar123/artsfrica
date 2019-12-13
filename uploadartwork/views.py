@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import ArtWork, Images
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -86,18 +86,105 @@ def view_artwork(request):
     #print(Images.objects.get())
     return render(request, 'uploadartwork/view_artwork.html', { 'artworks': artworks })
 
-def detail_view(request, id):
+def collection_view(request):
+    """ Show all artwork to SuperUser """
+
+    user = request.user
+    artwork_list = ArtWork.objects.filter(is_approved=False).order_by('id')
+    paginator = Paginator(artwork_list, 12)
+    page = request.GET.get('page', 1)
+
+    try:
+        artworks = paginator.page(page)
+    except PageNotAnInteger:
+        artworks = paginator.page(1)
+    except EmptyPage:
+        artworks = paginator.page(paginator.num_pages)
+
+    # To do
+    # Get images related to work
+    # 
+    #print(Images.objects.get())
+    return render(request, 'uploadartwork/collections.html', { 'artworks': artworks })
+
+def change_status_view(request):
+    """ Approve an artwork """
     
+    if request.method == 'POST':
+        ids_list = request.POST.getlist('id')
+        approved_list = request.POST.getlist('approve')
+
+        intersection = set(ids_list).intersection(approved_list)
+        for index in intersection:
+            ArtWork.objects.filter(id=index).update(is_approved=True)
+
+    return redirect('collection_view')
+
+
+def approved_view(request):
+    """ Show Only approved artwork to SuperUser """
+
+    user = request.user
+    artwork_list = ArtWork.objects.filter(is_approved=True).order_by('id')
+    paginator = Paginator(artwork_list, 12)
+    page = request.GET.get('page', 1)
+
+    try:
+        artworks = paginator.page(page)
+    except PageNotAnInteger:
+        artworks = paginator.page(1)
+    except EmptyPage:
+        artworks = paginator.page(paginator.num_pages)
+
+
+    return render(request, 'uploadartwork/approved.html', { 'artworks': artworks })
+
+def change_approved_status_view(request):
+    """ Approve an artwork """
+    
+    if request.method == 'POST':
+        ids_list = request.POST.getlist('id')
+        approved_list = request.POST.getlist('approve')
+
+        intersection = set(ids_list).intersection(approved_list)
+        for index in intersection:
+            ArtWork.objects.filter(id=index).update(is_approved=False)
+
+    return redirect('approved_view')
+
+
+def detail_view(request, id):
+    """ Detail view of single artwork """
+
     # To get object
     #artwork = ArtWork.objects.filter(id=id).first()
     #print(artwork)
+
     # To get query set
     #artwork = ArtWork.objects.filter(id=id)
     #print(artwork)
+
+    try:
+        artwork = ArtWork.objects.filter(id=id).first().post.all()
+    except Exception as identifier:
+        return render(request, 'uploadartwork/404.html')        
     
-    artwork = ArtWork.objects.filter(id=id).first().post.all()
+    return render(request, 'uploadartwork/detail_view.html', {'artwork':artwork} )
+
+
+def edit_view(request,id):
+    """ Edit view for single Artwork """
+
+    artwork = ArtWork.objects.filter(id=id).first()
     if not artwork:
         return render(request, 'uploadartwork/404.html')        
+    return render(request, 'uploadartwork/edit_view.html', {'artwork':artwork} )
 
-    print(artwork[0].image)
-    return render(request, 'uploadartwork/detail_view.html')
+
+def update_artwork(request , id):
+    """ Update view """
+
+    if request.method == 'POST':
+        return redirect('edit_view',id = request.POST['id'])    
+
+    
