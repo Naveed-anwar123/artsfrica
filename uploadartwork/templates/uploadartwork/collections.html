@@ -9,7 +9,7 @@
 
     <div class="row">
         <div class="col-2">
-            <h1 class="header-title">Pending Approval ({{ artworks.paginator.count }})</h1>
+            <h1 class="header-title">Pending Approval ({{ art.paginator.count }})</h1>
         </div>
         <div class="col-4">
             <a href="{% url 'approved_view' %}" style="color: black;" >Approved</a>  | <a href="{% url 'collection_view' %}"> Not Approved</a> 
@@ -24,11 +24,11 @@
         <div class="row">
 
             {% csrf_token %}
-            {% for artwork in artworks %}
+            {% for artwork,image in artworks %}
             <input type="hidden" value="{{artwork.id}}" name="id">
             <div class="col-3">
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{artwork}}" alt="Card image cap">
+                    <img class="card-img-top" src="{{image.image.url}}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">{{artwork.title}}</h5>
                         <p class="card-text">{{artwork.description|safe|truncatechars:40}}</p>
@@ -50,28 +50,28 @@
             {% endfor %}
 
         </div>
-        {% if  artworks.paginator.count > 0 %}
+        {% if  art.paginator.count > 0 %}
         <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save Changes</button>
         {% endif %}
     </form>
     <div class="row">
         <div class="col-8 offset-md-2">
-            {% if artworks.has_other_pages %}
+            {% if art.has_other_pages %}
             <ul class="pagination">
-                {% if artworks.has_previous %}
-                <li><a href="?page={{ artworks.previous_page_number }}">&laquo;</a></li>
+                {% if art.has_previous %}
+                <li><a href="?page={{ art.previous_page_number }}">&laquo;</a></li>
                 {% else %}
                 <li class="disabled"><span>&laquo;</span></li>
                 {% endif %}
                 {% for i in artworks.paginator.page_range %}
-                {% if artworks.number == i %}
+                {% if art.number == i %}
                 <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
                 {% else %}
                 <li><a href="?page={{ i }}">{{ i }}</a></li>
                 {% endif %}
                 {% endfor %}
-                {% if artworks.has_next %}
-                <li><a href="?page={{ artworks.next_page_number }}">&raquo;</a></li>
+                {% if art.has_next %}
+                <li><a href="?page={{ art.next_page_number }}">&raquo;</a></li>
                 {% else %}
                 <li class="disabled"><span>&raquo;</span></li>
                 {% endif %}

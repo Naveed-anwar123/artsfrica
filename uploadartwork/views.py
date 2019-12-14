@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import ArtWork, Images
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required, permission_required
 
-
+@login_required(login_url='/accounts/signin')
 def add_artwork(request):
     if request.method == 'POST':
 
@@ -64,13 +65,14 @@ def add_artwork(request):
 
 
 #https://simpleisbetterthancomplex.com/tutorial/2016/08/03/how-to-paginate-with-django.html
-
+@login_required(login_url='/accounts/signin')
 def view_artwork(request):
     """ Get current user artwork """
 
     user = request.user
     artwork_list = ArtWork.objects.filter(owner=user).order_by('id')
-    paginator = Paginator(artwork_list, 1)
+   
+    paginator = Paginator(artwork_list, 12)
     page = request.GET.get('page', 1)
 
     try:
@@ -83,9 +85,17 @@ def view_artwork(request):
     # To do
     # Get images related to work
     # 
-    #print(Images.objects.get())
-    return render(request, 'uploadartwork/view_artwork.html', { 'artworks': artworks })
+    images = []
+    for art in artwork_list:
+        images.append(Images.objects.filter(post=art).last())
 
+    
+    obj = zip(artworks,images)
+    obj1 = artworks
+    
+    return render(request, 'uploadartwork/view_artwork.html', { 'artworks': obj , 'art':obj1  })
+
+@permission_required('is_superuser',login_url='/accounts/unauthorized')  
 def collection_view(request):
     """ Show all artwork to SuperUser """
 
@@ -105,8 +115,17 @@ def collection_view(request):
     # Get images related to work
     # 
     #print(Images.objects.get())
-    return render(request, 'uploadartwork/collections.html', { 'artworks': artworks })
+    images = []
+    for art in artwork_list:
+        images.append(Images.objects.filter(post=art).last())
 
+    
+    obj = zip(artworks,images)
+    obj1 = artworks
+    
+    return render(request, 'uploadartwork/collections.html', { 'artworks': obj , 'art':obj1  })
+
+@permission_required('is_superuser',login_url='/accounts/unauthorized')  
 def change_status_view(request):
     """ Approve an artwork """
     
@@ -117,10 +136,10 @@ def change_status_view(request):
         intersection = set(ids_list).intersection(approved_list)
         for index in intersection:
             ArtWork.objects.filter(id=index).update(is_approved=True)
-
+    
     return redirect('collection_view')
 
-
+@permission_required('is_superuser',login_url='/accounts/unauthorized')  
 def approved_view(request):
     """ Show Only approved artwork to SuperUser """
 
@@ -136,9 +155,17 @@ def approved_view(request):
     except EmptyPage:
         artworks = paginator.page(paginator.num_pages)
 
+    images = []
+    for art in artwork_list:
+        images.append(Images.objects.filter(post=art).last())
 
-    return render(request, 'uploadartwork/approved.html', { 'artworks': artworks })
+    
+    obj = zip(artworks,images)
+    obj1 = artworks
+    
+    return render(request, 'uploadartwork/approved.html', { 'artworks': obj , 'art':obj1  })
 
+@permission_required('is_superuser',login_url='/accounts/unauthorized')  
 def change_approved_status_view(request):
     """ Approve an artwork """
     
@@ -171,7 +198,7 @@ def detail_view(request, id):
     
     return render(request, 'uploadartwork/detail_view.html', {'artwork':artwork} )
 
-
+@login_required(login_url='/accounts/signin')
 def edit_view(request,id):
     """ Edit view for single Artwork """
 
@@ -180,11 +207,59 @@ def edit_view(request,id):
         return render(request, 'uploadartwork/404.html')        
     return render(request, 'uploadartwork/edit_view.html', {'artwork':artwork} )
 
-
+@login_required(login_url='/accounts/signin')
 def update_artwork(request , id):
     """ Update view """
 
     if request.method == 'POST':
+        artwork = ArtWork.objects.filter(id=id).first()
+        
+        title = request.POST['title']
+        description = request.POST['description']
+        subject = request.POST['subject']
+        category = request.POST['category']
+        year = request.POST['year']
+        width = request.POST['width']
+        height = request.POST['height']
+        depth = request.POST['depth']
+        material = request.POST['material']
+        medium = request.POST['medium']
+        styles = request.POST['styles']
+        medium = request.POST['medium']
+        is_framed = request.POST['framed']
+        is_copyright = request.POST['copyright']
+        is_approved =  False
+
+        
+        artwork.title = title
+        artwork.description = description
+        artwork.subject = subject
+        artwork.category = category
+        artwork.year = year
+        artwork.width = width
+        artwork.height = height
+        artwork.depth = depth
+        artwork.material = material
+        artwork.medium = medium
+        artwork.styles = styles
+
+        if is_framed == 'y':
+            artwork.is_framed = True
+        else:
+            artwork.is_framed = False
+
+        if is_copyright == 'y':
+            artwork.is_copyright = True
+        else:
+            artwork.is_copyright = False
+
+        artwork.save()
+        for file in request.FILES.getlist('images'):
+            if file:
+                images = Images()
+                images.image = file
+                images.post = artwork
+                images.save()
         return redirect('edit_view',id = request.POST['id'])    
 
     

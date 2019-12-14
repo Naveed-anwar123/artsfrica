@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from uploadartwork.models import ArtWork
+from uploadartwork.models import ArtWork, Images
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -7,8 +7,10 @@ def home(request):
     """ Get current user artwork """
 
     
+    user = request.user
     artwork_list = ArtWork.objects.filter(is_approved=True).order_by('id')
-    paginator = Paginator(artwork_list, 1)
+   
+    paginator = Paginator(artwork_list, 12)
     page = request.GET.get('page', 1)
 
     try:
@@ -21,8 +23,16 @@ def home(request):
     # To do
     # Get images related to work
     # 
-    #print(Images.objects.get())
-    return render(request, 'frontend/index.html', { 'artworks': artworks })
+    images = []
+    for art in artwork_list:
+        images.append(Images.objects.filter(post=art).last())
+
+    
+    obj = zip(artworks,images)
+    obj1 = artworks
+    
+    return render(request, 'frontend/index.html', { 'artworks': obj , 'art':obj1  })
+
     
 def detail(request, id):
     """ Frontend details view """

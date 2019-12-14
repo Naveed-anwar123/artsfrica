@@ -49,12 +49,9 @@
                 <div class="form-group">
                     <label class="col-form-label">Category</label>
                     <select class="custom-select" name="category">
-                        {% if artwork.category == 'Category-1'  %}
+                        {% if artwork.category != 'Category-1'  %}
                         <option value="Category-1" selected="selected">Category-1</option>
                         <option value="Category-2">Category-2</option>
-                        {% elif artwork.category == 'Category-2'  %}
-                        <option value="Category-1">Category-1</option>
-                        <option value="Category-2" selected="selected">Category-2</option>
                         {% endif %}
                     </select>
                 </div>
@@ -122,7 +119,7 @@
                 </div>
                 {% elif not artwork.is_framed %}
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" value="y"  id="framed1" name="framed" class="custom-control-input">
+                    <input type="radio" value="y" id="framed1" name="framed" class="custom-control-input">
                     <label class="custom-control-label" for="framed1">Yes</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
@@ -148,12 +145,12 @@
                 </div>
                 {% elif not artwork.is_copyright %}
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" value="y"  id="copyright1" name="copyright"
-                        class="custom-control-input">
+                    <input type="radio" value="y" id="copyright1" name="copyright" class="custom-control-input">
                     <label class="custom-control-label" for="copyright1">Yes</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" value="n" checked="" id="copyright2" name="copyright" class="custom-control-input">
+                    <input type="radio" value="n" checked="" id="copyright2" name="copyright"
+                        class="custom-control-input">
                     <label class="custom-control-label" for="copyright2">No</label>
                 </div>
                 {% endif %}
